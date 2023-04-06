@@ -1,0 +1,21 @@
+﻿<Project>
+  <PropertyGroup>
+    <BaseOutputPath>..\..\artifacts\bin\ChatGPTRobot</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\..\artifacts\obj\ChatGPTRobot</BaseIntermediateOutputPath>
+    <UserSecretsId>12cf80da-6fcb-4bba-aefe-53b431a9b89c</UserSecretsId>
+  </PropertyGroup>
+  
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <ItemGroup>
+    <PackageReference Include="OpenAI" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+</Project>
+
