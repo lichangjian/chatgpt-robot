@@ -1,5 +1,4 @@
-using ChatGPTRobot;
-using ChatGPTRobot.Domains;
+using ChatGPTRobot.Domains.Feishu;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,8 +18,8 @@ var options = new JsonSerializerOptions(JsonSerializerDefaults.Web);
 
 app.MapGet("/", () => "hello world");
 
-app.MapPost("/chat", (ChatRequest request) => {
-    return string.Format("{{\"challenge\":\"{0}\"}}", request.Challenge);
+app.MapPost("/chat", (RecieveMessageEvent request) => {
+    return "success";
 });
 
 app.Run("http://0.0.0.0:9527");

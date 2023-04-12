@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <BaseOutputPath>..\..\artifacts\bin\ChatRobot</BaseOutputPath>
+    <BaseIntermediateOutputPath>..\..\artifacts\obj\ChatRobot</BaseIntermediateOutputPath>
+    <UserSecretsId>12cf80da-6fcb-4bba-aefe-53b431a9b89c</UserSecretsId>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+</Project>
