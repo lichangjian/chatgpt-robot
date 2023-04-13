@@ -1,4 +1,4 @@
-using ChatRobot.Controllers.Feishu;
+using ChatRobot.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
 
@@ -9,21 +9,22 @@ namespace ChatRobot.Controllers
     public class FeishuController : ControllerBase
     {
         private readonly ILogger<FeishuController> _logger;
-        private readonly FeishuService feishuService;
-        private readonly ChatGPTService chatGPTService;
+        private readonly IChatService chatService;
 
-        public FeishuController(ILogger<FeishuController> logger)
+        public FeishuController(IConfigurationRoot configuration, ILogger<FeishuController> logger)
         {
             _logger = logger;
-            var token = "";
-            this.feishuService = new FeishuService(token);
-            this.chatGPTService = new ChatGPTService();
+            this.chatService = new ChatServiceFactory().Create(configuration);
         }
 
         [HttpPost(Name = "Chat")]
-        public async Task<HttpResponseMessage> PostChat([FromBody]JObject parameter)
+        public HttpResponseMessage Chat([FromBody]JObject parameter)
         {
-            
+            var succ = this.chatService.OnRecieve(parameter);
+            if (succ)
+                return new HttpResponseMessage(System.Net.HttpStatusCode.OK);
+            else
+                return new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
         }
     }
 }

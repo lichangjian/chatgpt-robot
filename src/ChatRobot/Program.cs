@@ -7,6 +7,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Configuration.AddUserSecrets("openai_secret");
+builder.Configuration.AddUserSecrets("appId");
+builder.Configuration.AddUserSecrets("appSecret");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
