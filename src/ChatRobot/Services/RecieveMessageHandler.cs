@@ -8,12 +8,13 @@ namespace ChatRobot.Services
         private IChatGPTService chatGPTService;
         private IClient client;
         private string sendUrl = "https://open.feishu.cn/open-apis/im/v1/messages";
+        private ILogger logger;
 
-        public RecieveMessageHandler(IClient client, IChatGPTService chatGPTService)
+        public RecieveMessageHandler(IClient client, IChatGPTService chatGPTService, ILogger logger)
         {
             Check.IsNotNull(chatGPTService, nameof(chatGPTService));
             Check.IsNotNull(client, nameof(client));
-
+            this.logger = logger;
             this.client = client;
             this.chatGPTService = chatGPTService;
         }
@@ -27,6 +28,8 @@ namespace ChatRobot.Services
         {
             var chatId = data["event"]["message"]["chat_id"].Value<string>();
             var message = data["event"]["message"]["content"].Value<string>();
+
+            logger.LogInformation("RecieveMessageHandler, chatId:" + chatId + ", message:" + message);
             var messageContent = JsonConvert.DeserializeObject<MessageContent>(message);
             Send(chatId, messageContent.text);
             return true;

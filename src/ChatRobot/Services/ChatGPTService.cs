@@ -9,6 +9,7 @@
             Check.IsNotNull(secret, nameof(secret));
             this.secret = secret;
         }
+
         public async Task<string> Send(string chat, string message)
         {
             throw new NotImplementedException();

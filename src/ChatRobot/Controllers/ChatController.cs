@@ -6,15 +6,15 @@ namespace ChatRobot.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class FeishuController : ControllerBase
+    public class ChatController : ControllerBase
     {
-        private readonly ILogger<FeishuController> _logger;
+        private readonly ILogger<ChatController> _logger;
         private readonly IChatService chatService;
 
-        public FeishuController(IConfigurationRoot configuration, ILogger<FeishuController> logger)
+        public ChatController(IConfiguration configuration, ILogger<ChatController> logger)
         {
             _logger = logger;
-            this.chatService = new ChatServiceFactory().Create(configuration);
+            this.chatService = new ChatServiceFactory().Create(configuration, logger);
         }
 
         [HttpPost(Name = "Chat")]

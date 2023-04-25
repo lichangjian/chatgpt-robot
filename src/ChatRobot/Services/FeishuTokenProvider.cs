@@ -25,21 +25,28 @@ namespace ChatRobot.Services
         private HttpClient httpClient;
         private string appId;
         private string appSecret;
+        private ILogger logger;
 
-        public FeishuTokenProvider(string appId, string appSecret)
+        public FeishuTokenProvider(string appId, string appSecret, ILogger logger)
         {
             Check.IsNotNull(appId, nameof(appId));
             Check.IsNotNull(appSecret, nameof(appSecret));
+            Check.IsNotNull(logger, nameof(logger));
 
+            this.logger = logger;
             this.httpClient = new HttpClient();
             this.appId = appId;
             this.appSecret = appSecret;
+
+            this.logger.LogInformation("appId:" + appId + ", secret:" + appSecret);
         }
 
         public async Task<string> GetToken()
         {
             if (!IsExpired())
                 return token;
+
+            logger.LogInformation("GetToken");
 
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             request.Headers.Add("Content-Type", "application/json; charset=utf-8");
@@ -53,6 +60,8 @@ namespace ChatRobot.Services
 
             this.expiredTime = DateTime.Now.AddSeconds(repData.expire);
             this.token = repData.tenant_access_token;
+            logger.LogInformation("GetToken success:" + this.token);
+
             return this.token;
         }
 

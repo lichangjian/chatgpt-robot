@@ -2,15 +2,15 @@
 {
     public class ChatServiceFactory : IChatServiceFactory
     {
-        public IChatService Create(IConfigurationRoot configuration)
+        public IChatService Create(IConfiguration configuration, ILogger logger)
         {
-            var chatService = new ChatService("");
+            var chatService = new ChatService(logger);
 
             var chatGPTService = new ChatGPTService(configuration["openai_secret"]);
 
-            var tokenProvider = new FeishuTokenProvider(configuration["appId"], configuration["appSecret"]);
-            var client = new FeishuClient(tokenProvider);
-            var recieveMessageHandler = new RecieveMessageHandler(client, chatGPTService);
+            var tokenProvider = new FeishuTokenProvider(configuration["appId"], configuration["appSecret"], logger);
+            var client = new FeishuClient(tokenProvider, logger);
+            var recieveMessageHandler = new RecieveMessageHandler(client, chatGPTService, logger);
 
             chatService.RegisterHandler("im.message.receive_v1", recieveMessageHandler);
 

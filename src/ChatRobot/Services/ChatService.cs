@@ -4,12 +4,13 @@ namespace ChatRobot.Services
 {
     public class ChatService : IChatService
     {
-        private readonly string accessToken;
         private Dictionary<string, IHandler> handlers = new Dictionary<string, IHandler>();
+        private ILogger logger;
 
-        public ChatService(string token)
+        public ChatService(ILogger logger)
         {
-            this.accessToken = token;
+            Check.IsNotNull(logger, nameof(logger));
+            this.logger = logger;
         }
 
         public void RegisterHandler(string eventType, IHandler handler)
@@ -25,6 +26,7 @@ namespace ChatRobot.Services
             Check.IsNotNull(data, nameof(data));
 
             var eventType = data["header"]["event_type"].Value<string>();
+            logger.LogInformation("OnRecieve, eventType:" + eventType);
             return this.handlers[eventType].Handle(data);
         }
     }

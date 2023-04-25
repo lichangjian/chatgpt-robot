@@ -13,9 +13,11 @@ namespace ChatRobot.Services
     {
         private HttpClient client;
         private ITokenProvider tokenProvider;
+        private ILogger logger;
 
-        public FeishuClient(ITokenProvider tokenProvider)
+        public FeishuClient(ITokenProvider tokenProvider, ILogger logger)
         {
+            this.logger = logger;
             this.client = new HttpClient();
             this.tokenProvider = tokenProvider;
         }
@@ -27,6 +29,7 @@ namespace ChatRobot.Services
             request.Headers.Add("Content-Type", "application/json; charset=utf-8");
             request.Headers.Add("Authorization:Bearer", token);
             request.Content = new StringContent(data);
+            logger.LogInformation("Post, url:" + url + ", data:" + data);
             await client.SendAsync(request);
         }
 

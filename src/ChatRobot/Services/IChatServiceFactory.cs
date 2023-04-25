@@ -2,6 +2,6 @@
 {
     public interface IChatServiceFactory
     {
-        IChatService Create(IConfigurationRoot configuration);
+        IChatService Create(IConfiguration configuration, ILogger logger);
     }
 }
