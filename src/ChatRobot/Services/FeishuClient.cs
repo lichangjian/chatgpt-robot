@@ -21,7 +21,7 @@ namespace ChatRobot.Services
         private HttpClient client;
         private ITokenProvider tokenProvider;
         private ILogger logger;
-        private string sendUrl = "https://open.feishu.cn/open-apis/im/v1/messages";
+        private string sendUrl = "https://open.feishu.cn/open-apis/im/v1/messages?receive_id_type=chat_id";
 
         public FeishuClient(ITokenProvider tokenProvider, ILogger logger)
         {

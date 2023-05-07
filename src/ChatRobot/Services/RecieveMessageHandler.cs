@@ -39,7 +39,8 @@ namespace ChatRobot.Services
         private async void Send(string chatId, string message)
         {
             var rep = await this.chatGPTService.Send(chatId, message);
-            await client.SendChatMessage(chatId, rep);
+            var feiShuRep = await client.SendChatMessage(chatId, rep);
+            logger.LogInformation("send code:" + feiShuRep.code + ", msg:" + feiShuRep.msg);
         }
     }
 }
