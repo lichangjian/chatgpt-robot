@@ -17,7 +17,14 @@ namespace ChatRobot.Controllers
             this.chatService = new ChatServiceFactory().Create(configuration, logger);
         }
 
-        [HttpPost(Name = "Chat")]
+        [HttpGet]
+        public string Test()
+        {
+            _logger.LogInformation("Test");
+            return "TestSuccess";
+        }
+
+        [HttpPost]
         public HttpResponseMessage Chat([FromBody]JObject parameter)
         {
             var succ = this.chatService.OnRecieve(parameter);
