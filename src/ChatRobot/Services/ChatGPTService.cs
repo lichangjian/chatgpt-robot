@@ -1,18 +1,20 @@
-﻿namespace ChatRobot.Services
+﻿using OpenAI_API;
+
+namespace ChatRobot.Services
 {
     public class ChatGPTService : IChatGPTService
     {
-        private string secret;
+        private OpenAIAPI api;
 
         public ChatGPTService(string secret)
         {
             Check.IsNotNull(secret, nameof(secret));
-            this.secret = secret;
+            this.api = new OpenAIAPI(secret);
         }
 
-        public Task<string> Send(string chat, string message)
+        public async Task<string> Send(string chat, string message)
         {
-            return Task.FromResult(message);
+            return await this.api.Completions.GetCompletion(message);
         }
     }
 }
