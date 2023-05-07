@@ -6,7 +6,7 @@
         {
             var chatService = new ChatService(logger);
 
-            var chatGPTService = new ChatGPTService(configuration["openai_secret"]);
+            var chatGPTService = new ChatGPTService(configuration["openai_secret"], logger);
 
             var tokenProvider = new FeishuTokenProvider(configuration["appId"], configuration["appSecret"], logger);
             var client = new FeishuClient(tokenProvider, logger);
