@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace ChatRobot.Services
 {
@@ -18,7 +19,7 @@ namespace ChatRobot.Services
             public int expire;
         }
 
-        private string url = "https://open.feishu.cn/open-apis/authen/v1/access_token";
+        private string url = "https://open.feishu.cn/open-apis/auth/v3/app_access_token/internal";
 
         private string token;
         private DateTime expiredTime;
@@ -49,9 +50,9 @@ namespace ChatRobot.Services
             logger.LogInformation("GetToken");
 
             var request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Headers.Add("Content-Type", "application/json; charset=utf-8");
             var data = new RequestData() { app_id = appId, app_secret = appSecret };
             request.Content = new StringContent(JsonConvert.SerializeObject(data));
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var rep = await this.httpClient.SendAsync(request);
             var repContent = await rep.Content.ReadAsStringAsync();
             var repData = JsonConvert.DeserializeObject<ResponseData>(repContent);

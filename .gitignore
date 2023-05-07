@@ -1,3 +1,7 @@
 /*.pem
 /artifacts
 /.vs
+/*.ovpn
+/*.ppk
+/src/ChatRobot.Tests/obj
+/src/ChatRobot.Tests/bin

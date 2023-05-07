@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace ChatRobot.Services
 {
@@ -9,11 +10,18 @@ namespace ChatRobot.Services
         public string content;
     }
 
+    public class SendResponse
+    {
+        public int code;
+        public string msg;
+    }
+
     public class FeishuClient : IClient
     {
         private HttpClient client;
         private ITokenProvider tokenProvider;
         private ILogger logger;
+        private string sendUrl = "https://open.feishu.cn/open-apis/im/v1/messages";
 
         public FeishuClient(ITokenProvider tokenProvider, ILogger logger)
         {
@@ -22,27 +30,28 @@ namespace ChatRobot.Services
             this.tokenProvider = tokenProvider;
         }
 
-        public async Task Post(string url, string data)
+        public async Task<HttpResponseMessage> Post(string url, string data)
         {
             var token = await tokenProvider.GetToken();
             var request = new HttpRequestMessage(HttpMethod.Post, url);
-            request.Headers.Add("Content-Type", "application/json; charset=utf-8");
-            request.Headers.Add("Authorization:Bearer", token);
+            request.Headers.Add("Authorization", "Bearer " + token);
             request.Content = new StringContent(data);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             logger.LogInformation("Post, url:" + url + ", data:" + data);
-            await client.SendAsync(request);
+            var rep = await client.SendAsync(request);
+            return rep;
         }
 
-        public async Task SendMessageAsync(string chatId, string message)
+        public async Task<SendResponse> SendChatMessage(string chatId, string message)
         {
             var sendRequest = new SendRequest();
             sendRequest.receive_id = chatId;
             sendRequest.msg_type = "text";
             sendRequest.content = $"{{\"text\":\"{message}\"}}";
-            var content = new StringContent(JsonConvert.SerializeObject(sendRequest));
-            var url = "";
-            var rep = await this.client.PostAsync(url, content);
-            rep.EnsureSuccessStatusCode();
+            var content = JsonConvert.SerializeObject(sendRequest);
+
+            var rep = await Post(this.sendUrl, content);
+            return await rep.Content.ReadFromJsonAsync<SendResponse>();
         }
     }
 }

@@ -7,7 +7,6 @@ namespace ChatRobot.Services
     {
         private IChatGPTService chatGPTService;
         private IClient client;
-        private string sendUrl = "https://open.feishu.cn/open-apis/im/v1/messages";
         private ILogger logger;
 
         public RecieveMessageHandler(IClient client, IChatGPTService chatGPTService, ILogger logger)
@@ -38,14 +37,7 @@ namespace ChatRobot.Services
         private async void Send(string chatId, string message)
         {
             var rep = await this.chatGPTService.Send(chatId, message);
-
-            var sendRequest = new SendRequest();
-            sendRequest.receive_id = chatId;
-            sendRequest.msg_type = "text";
-            sendRequest.content = $"{{\"text\":\"{message}\"}}";
-            var content = JsonConvert.SerializeObject(sendRequest);
-
-            await client.Post(this.sendUrl, content);
+            await client.SendChatMessage(chatId, rep);
         }
     }
 }

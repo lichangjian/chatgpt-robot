@@ -2,6 +2,7 @@
 {
     public interface IClient
     {
-        Task Post(string url, string data);
+        Task<HttpResponseMessage> Post(string url, string data);
+        Task<SendResponse> SendChatMessage(string chatId, string message);
     }
 }
