@@ -11,6 +11,7 @@ namespace ChatRobot.Services
         {
             Check.IsNotNull(secret, nameof(secret));
             this.api = new OpenAIAPI(secret);
+            this.logger = loggger;
         }
 
         public async Task<string> Send(string chat, string message)
