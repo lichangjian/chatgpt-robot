@@ -30,6 +30,8 @@ namespace ChatRobot.Services
 
             logger.LogInformation("RecieveMessageHandler, chatId:" + chatId + ", message:" + message);
             var messageContent = JsonConvert.DeserializeObject<MessageContent>(message);
+            messageContent.text = messageContent.text.Replace("@_user_1", "");
+            messageContent.text = messageContent.text.Trim();
             Send(chatId, messageContent.text);
             return true;
         }

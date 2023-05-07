@@ -10,9 +10,9 @@
             this.secret = secret;
         }
 
-        public async Task<string> Send(string chat, string message)
+        public Task<string> Send(string chat, string message)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(message);
         }
     }
 }
