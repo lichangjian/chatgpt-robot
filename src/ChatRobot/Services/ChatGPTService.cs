@@ -15,6 +15,7 @@ namespace ChatRobot.Services
             this.logger = loggger;
             OpenAiService.Instance.AddOpenAi(setting => setting.ApiKey = secret, "NoDI");
             openAiApi = OpenAiService.Factory.CreateChat("chat");
+            Check.IsNotNull(openAiApi, "openAIAPI");
         }
 
         public async Task<string> Send(string chat, string message)
