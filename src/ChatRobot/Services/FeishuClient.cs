@@ -16,6 +16,11 @@ namespace ChatRobot.Services
         public string msg;
     }
 
+    public class MessageContent
+    {
+        public string text;
+    }
+
     public class FeishuClient : IClient
     {
         private HttpClient client;
@@ -47,10 +52,12 @@ namespace ChatRobot.Services
             var sendRequest = new SendRequest();
             sendRequest.receive_id = chatId;
             sendRequest.msg_type = "text";
-            sendRequest.content = $"{{\"text\":\"{message}\"}}";
-            var content = JsonConvert.SerializeObject(sendRequest);
+            var content = new MessageContent();
+            content.text = message;
+            sendRequest.content = JsonConvert.SerializeObject(content);
+            var result = JsonConvert.SerializeObject(sendRequest);
 
-            var rep = await Post(this.sendUrl, content);
+            var rep = await Post(this.sendUrl, result);
             return await rep.Content.ReadFromJsonAsync<SendResponse>();
         }
     }
